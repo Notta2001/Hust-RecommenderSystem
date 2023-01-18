@@ -41,7 +41,7 @@ class Topsis():
       for j in range(self.column_size):
         self.normalized_decision[i, j] *= self.weight[j]
 
-  def find(self):
+  def find_recommender_list(self):
     self.worst_decision = np.zeros(self.column_size)
     self.best_decision = np.zeros(self.column_size)
     for i in range(self.column_size):
@@ -61,7 +61,13 @@ class Topsis():
       self.best_distance[i] = self.bets_distance[i]**0.5
 
     # caculate similarity
-    self.similarity = np.zeros(self.row_size)
+    # self.best_similarity = np.zeros(self.row_size)
+    self.worst_similarity = np.zeros(self.row_size)
     for i in range(self.row_size):
-      self.similarity[i] = self.worst_distance[i]/(self.worst_distance[i] + self.best_distance[i])
+      self.worst_similarity[i] = self.worst_distance[i]/(self.worst_distance[i] + self.best_distance[i])
+      # self.best_similarity[i] = self.best_distance[i]/(self.worst_distance[i] + self.best_distance[i])
+
+    # ranking
+    self.ranking = [i+1 for i in self.worst_similarity.argsort()]
+    return self.ranking
     
